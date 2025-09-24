@@ -47,11 +47,20 @@ def obtener_recomendaciones(user_id, N=10):
     else:
         return "El usuario no está registrado."
 
-# Interfaz para seleccionar el usuario
-selected_user = st.selectbox(
-    "Selecciona un usuario de la lista",
-    list(user_to_num.keys())
-)
+
+# Entrada de búsqueda
+search = st.text_input("Buscar id de usuario...")
+
+# Solo traemos coincidencias
+if search:
+    filtered_users = [
+    u for u in user_to_num.keys() if search.isdigit() and search in str(u)][:50]
+
+else:
+    filtered_users = []
+
+selected_user = st.selectbox("Posibles coincidencias", filtered_users)
+
 
 # Botón para mostrar las recomendaciones
 if st.button('Mostrar Recomendaciones'):
@@ -70,7 +79,7 @@ if st.button('Mostrar Recomendaciones'):
             for j, rec in enumerate(grupo_recomendaciones):
                 with cols[j]:
                     st.write(f"**{rec[1]}**")
-                    st.write(f"⭐ {rec[2]:.2f} score")
+                    st.write(f"⭐ {rec[2] * 100:.2f} score")
 
 # Visualizar las últimas compras del usuario seleccionado
 st.subheader(f"Últimas compras de {selected_user}:")
