@@ -16,8 +16,8 @@ Para ejecutar este proyecto localmente, sigue estos pasos:
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone <URL-DEL-REPOSITORIO>
-    cd Recommendation_model
+    git clone https://github.com/francocumpa/recommendation_model.git
+    cd recommendation_model
     ```
 
 2.  **Crear un entorno virtual (recomendado):**
