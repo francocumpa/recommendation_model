@@ -6,7 +6,9 @@ Este proyecto implementa un sistema de recomendación de productos utilizando un
 
 *Puedes encontrar una demostración en vivo de la aplicación en el siguiente enlace:*
 
-**[Link a la Demo]**
+**[Link a la Demo](https://recsys-rn9d.onrender.com/)** 
+
+(Puede tardar unos 50s a veces porque se usa un servidor gratuito).
 
 ## Instalación
 
