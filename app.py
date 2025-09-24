@@ -49,17 +49,15 @@ def obtener_recomendaciones(user_id, N=10):
 
 
 # Entrada de búsqueda
-search = st.text_input("Buscar id de usuario...")
+search = st.number_input("Buscar id de usuario...", min_value=1, step=1)
 
-# Solo traemos coincidencias
+#Solo traemos coincidencias
 if search:
-    filtered_users = [
-    u for u in user_to_num.keys() if search.isdigit() and search in str(u)][:50]
-
+    filtered_users = [u for u in user_to_num.keys() if str(search) in str(u)][:50]
 else:
     filtered_users = []
 
-selected_user = st.selectbox("Posibles coincidencias", filtered_users)
+selected_user = st.selectbox("Posibles coincidencias (50 primeros resultados)", filtered_users)
 
 
 # Botón para mostrar las recomendaciones
