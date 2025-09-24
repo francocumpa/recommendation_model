@@ -28,7 +28,7 @@ def obtener_ultimas_compras(user_id):
     if not last_purchases_user.empty:
         return last_purchases_user[['product_id', 'product_name']]
     else:
-        return "El usuario no tiene compras registradas."
+        return "El usuario no esta registrado en el sistema."
 
 # Función para obtener recomendaciones de productos
 def obtener_recomendaciones(user_id, N=10):
@@ -45,48 +45,39 @@ def obtener_recomendaciones(user_id, N=10):
         recomendaciones = [(pid, product_id_to_name.get(pid, None), score) for pid, score in recs_real]
         return recomendaciones
     else:
-        return "El usuario no está registrado."
+        return "El usuario no esta registrado en el sistema."
 
 
 # Entrada de búsqueda
-search = st.number_input("Buscar id de usuario...", min_value=1, step=1)
+search = st.number_input("Buscar ID de usuario (1 hasta 206209)", min_value=1, step=1)
 
-#Solo traemos coincidencias
-if search:
-    filtered_users = [u for u in user_to_num.keys() if str(search) in str(u)][:50]
-else:
-    filtered_users = []
+# Visualizar las úrecomendaciones del usuario seleccionado
+recomendaciones = obtener_recomendaciones(search)
+st.subheader('🎉 Recomendaciones para ti:')
+if isinstance(recomendaciones, str):
+    st.write(recomendaciones)  # Mostrar mensaje de error si no hay recomendaciones
+else:   
+    # Mostrar las recomendaciones en grupos de 3
+    for i in range(0, len(recomendaciones), 3):
+        cols = st.columns(3)
+        grupo_recomendaciones = recomendaciones[i:i+3]
 
-selected_user = st.selectbox("Posibles coincidencias (50 primeros resultados)", filtered_users)
-
-
-# Botón para mostrar las recomendaciones
-if st.button('Mostrar Recomendaciones'):
-    recomendaciones = obtener_recomendaciones(selected_user)
-    
-    if isinstance(recomendaciones, str):
-        st.error(recomendaciones)  # Mostrar mensaje de error si no hay recomendaciones
-    else:
-        st.subheader('🎉 Recomendaciones para ti:')
-        
-        # Mostrar las recomendaciones en grupos de 3
-        for i in range(0, len(recomendaciones), 3):
-            cols = st.columns(3)
-            grupo_recomendaciones = recomendaciones[i:i+3]
-
-            for j, rec in enumerate(grupo_recomendaciones):
-                with cols[j]:
-                    st.write(f"**{rec[1]}**")
-                    st.write(f"⭐ {rec[2] * 100:.2f} score")
+        for j, rec in enumerate(grupo_recomendaciones):
+            with cols[j]:
+                st.write(f"**{rec[1]}**")
+                st.write(f"⭐ {rec[2] * 100:.2f} score")
 
 # Visualizar las últimas compras del usuario seleccionado
-st.subheader(f"Últimas compras de {selected_user}:")
-ultimas_compras = obtener_ultimas_compras(selected_user)
+st.subheader(f"Últimas compras de {search}:")
+ultimas_compras = obtener_ultimas_compras(search)
 
 if isinstance(ultimas_compras, str):
     st.write(ultimas_compras)
 else:
     st.write(ultimas_compras[['product_id', 'product_name']])
+
+
+
 
 st.markdown("""
     ** El score es una medida heurística a partir de los datos implícitos 
